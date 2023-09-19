@@ -68,7 +68,7 @@ def signup():
     else:
         #add user to database
         make_user(email, password1, username)
-            
+        return redirect(url_for('views.home'))
 
     return redirect(url_for('auth.signup'))
 
@@ -79,7 +79,7 @@ def make_user(email, password1, username):
     db.session.commit()
     flash('Account created!', category='success')
     login_user(new_user, remember=True)
-    return redirect(url_for('views.home'))
+    
 
 
 
