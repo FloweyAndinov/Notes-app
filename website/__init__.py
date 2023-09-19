@@ -9,6 +9,7 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
 from . import models as models
+from . import miscModels as miscModels
 
 
 
@@ -35,12 +36,17 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    create_database(app)
+    check_database(app)
 
     return app
 
-def create_database(app):
+def check_database(app):
     if not path.exists('website/' + DB_NAME):
         with app.app_context():
             db.create_all()
         print('Created database')
+
+# def create_database(app):
+#     with app.app_context():
+#         db.create_all()
+#         print('Created database')

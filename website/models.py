@@ -20,3 +20,5 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(88))
     username = db.Column(db.String(128), unique=True)
     notes = db.relationship('Note', backref='user', lazy='dynamic')
+
+

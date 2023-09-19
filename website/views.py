@@ -6,12 +6,12 @@ from . import db
 import json
 
 
-#add note logic
 @views.route('/', methods=['GET'])
 @login_required
 def home():
     return render_template("home.html", user=current_user, user_name=current_user.username)
 
+#add note logic
 @views.route('/', methods=['POST'])
 @login_required
 def send_form():
