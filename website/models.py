@@ -2,9 +2,12 @@
 
 
 
-from . import db 
+from . import db
+from . miscModels import DarkMode
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+
+
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,5 +23,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(88))
     username = db.Column(db.String(128), unique=True)
     notes = db.relationship('Note', backref='user', lazy='dynamic')
+
 
 

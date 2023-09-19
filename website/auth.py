@@ -40,33 +40,44 @@ def logout():
 
 #sign up logic
 @login_required
-@auth.route('/signup', methods=['GET','POST'])
+@auth.route('/signup', methods=['GET'])
+def load_signup():
+    return render_template("signup.html", user=current_user)
+        
+
+@login_required
+@auth.route('/signup', methods=['POST'])
 def signup():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        username = request.form.get('username')
-        print(generate_password_hash(password1, method='sha256'))
+    email = request.form.get('email')
+    password1 = request.form.get('password1')
+    password2 = request.form.get('password2')
+    username = request.form.get('username')
+    print(generate_password_hash(password1, method='sha256'))
 
-        if User.query.filter_by(email=email).first():
-            flash('Account with this email already exists', category='error')
-        elif len(username) < 4:
-            flash('Invalid username', category='error')
-        elif len(password1) < 4:
-            flash('Invalid password', category='error')
-        elif len(email) < 4:
-            flash('Invalid Email', category='error')
-        elif password1!= password2:
-            flash('Passwords don\'t match', category='error')
-            pass
-        else:
-            #add user to database
-            new_user = User(email=email, password=generate_password_hash(password1, method='sha256'), username=username)
-            db.session.add(new_user)
-            db.session.commit()
-            flash('Account created!', category='success')
-            login_user(new_user, remember=True)
-            return redirect(url_for('views.home'))
+    if User.query.filter_by(email=email).first():
+        flash('Account with this email already exists', category='error')
+    elif len(username) < 4:
+        flash('Invalid username', category='error')
+    elif len(password1) < 4:
+        flash('Invalid password', category='error')
+    elif len(email) < 4:
+        flash('Invalid Email', category='error')
+    elif password1!= password2:
+        flash('Passwords don\'t match', category='error')
+        pass
+    else:
+        #add user to database
+        make_user(email, password1, username)
+            
 
-    return render_template("signup.html" , user=current_user)
+    return redirect(url_for('auth.signup'))
+
+
+def make_user(email, password1, username):
+    new_user = User(email=email, password=generate_password_hash(password1, method='sha256'), username=username)
+    db.session.add(new_user)
+    db.session.commit()
+    flash('Account created!', category='success')
+    login_user(new_user, remember=True)
+    return redirect(url_for('views.home'))
+
