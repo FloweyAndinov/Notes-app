@@ -18,14 +18,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(88))
     username = db.Column(db.String(128), unique=True)
     notes = db.relationship('Note', backref='user', lazy='dynamic')
-    darkmode = db.relationship('DarkMode')
+    darkmode = db.relationship('DarkMode', viewonly=True, back_populates="user")
 
 
 class DarkMode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     darkModeEnabled = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
-    user = db.relationship('User')
+    user = db.relationship('User', viewonly=True, back_populates="darkmode")
 
 
 

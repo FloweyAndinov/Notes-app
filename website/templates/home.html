@@ -7,7 +7,20 @@
 <h4> Welcome {{user_name}}</h4>
 
 <h1 align="center">Notes</h1>
+{% if dark==True %}
+<style>
+  body {
+    background-color: #5e5e5e; /* Replace with your desired background color */
+  }
+</style>
+{% else %}
+<style>
+  body {
+    background-color: #8bffb3; /* Replace with your desired background color */
+  }
+</style>
 
+{% endif %}
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">

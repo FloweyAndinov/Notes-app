@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, session, url_for
 from flask_login import login_required, current_user
-from .models import Note
+from .models import Note, User, DarkMode
 views = Blueprint('views' , __name__)
 from . import db
 import json
@@ -9,8 +9,20 @@ import json
 @views.route('/', methods=['GET'])
 @login_required
 def home():
+    dark=False
+    if current_user.is_authenticated:
+        print(current_user.id)
+        try:
+            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            print(result.darkModeEnabled)
+        except Exception as e:
+            new_darkmode = DarkMode(user_id=current_user.id)
+            db.session.add(new_darkmode)
+            db.session.commit()
+        finally:
+            dark=result.darkModeEnabled
 
-    return render_template("home.html", user=current_user, user_name=current_user.username)
+    return render_template("home.html", user=current_user, user_name=current_user.username, dark=dark)
 
 #add note logic
 @views.route('/', methods=['POST'])

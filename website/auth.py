@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 auth = Blueprint('auth' , __name__)
 from flask_login import login_user, login_required, logout_user, current_user
-
+from sqlalchemy import event
 
 
 
@@ -14,9 +14,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 def login():
     if request.method == 'POST':
         user_name = request.form.get('username')
-        print(user_name)
         password = request.form.get('password')
-        print(password)
         user = User.query.filter_by(username=user_name).first()
         if user and check_password_hash(user.password, password):
             flash('Logged in', category='success')
@@ -80,7 +78,8 @@ def make_user(email, password1, username):
     flash('Account created!', category='success')
     login_user(new_user, remember=True)
     
-
-
+@event.listens_for(User, 'after_insert')
+def receive_after_begin(session, transaction, connection):
+    print("user signed up successfully")
 
 
