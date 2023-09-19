@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Note
-from .miscModels import DarkMode
 views = Blueprint('views' , __name__)
 from . import db
 import json
@@ -10,7 +9,7 @@ import json
 @views.route('/', methods=['GET'])
 @login_required
 def home():
-    
+
     return render_template("home.html", user=current_user, user_name=current_user.username)
 
 #add note logic
