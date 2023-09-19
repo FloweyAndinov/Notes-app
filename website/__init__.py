@@ -9,8 +9,6 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
 from . import models as models
-from . import miscModels as miscModels
-
 
 
 

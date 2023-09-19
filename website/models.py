@@ -1,12 +1,8 @@
 #database schema 
 
-
-
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-
-
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,12 +27,7 @@ class DarkMode(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
     user = db.relationship('User')
 
-@db.event.listens_for(User, 'after_insert')
-def create_dark_mode_for_user(mapper, connection, target):
-    # Create a DarkMode object for the user and associate it
-    dark_mode = DarkMode(darkModeEnabled=False, user=target)
-    db.session.add(dark_mode)
-    db.session.commit()
+
 
 
 

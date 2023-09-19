@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, DarkMode
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 auth = Blueprint('auth' , __name__)
@@ -80,4 +80,7 @@ def make_user(email, password1, username):
     flash('Account created!', category='success')
     login_user(new_user, remember=True)
     return redirect(url_for('views.home'))
+
+
+
 
