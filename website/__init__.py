@@ -1,9 +1,14 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+
+#db imports
 from os import path
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
+
+
+
 from . import models as models
 def create_app():
     app = Flask(__name__)
