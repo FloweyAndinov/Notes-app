@@ -6,6 +6,10 @@ auth = Blueprint('auth' , __name__)
 from flask_login import login_user, login_required, logout_user, current_user
 
 
+
+
+
+#login logic
 @auth.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
@@ -22,12 +26,20 @@ def login():
             flash('Invalid credentials', category='error')
     return render_template("login.html", user=current_user)
 
+
+
+
+#logout logic
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect (url_for('auth.login'))
-login_required
+
+
+
+#sign up logic
+@login_required
 @auth.route('/signup', methods=['GET','POST'])
 def signup():
     if request.method == 'POST':

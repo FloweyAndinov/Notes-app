@@ -1,15 +1,19 @@
 from flask import Flask
 
-#db imports
 from os import path
+
+
+#db imports
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
-
-
-
 from . import models as models
+
+
+
+
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'test'
