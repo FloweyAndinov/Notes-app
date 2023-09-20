@@ -19,6 +19,7 @@ def home():
             new_darkmode = DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
             db.session.commit()
+            result = new_darkmode
         finally:
             dark=result.darkModeEnabled
 
@@ -51,3 +52,15 @@ def delete_note():
             db.session.delete(note)
             db.session.commit()
     return jsonify({})
+
+@views.route('/darkmode', methods=['GET'])
+def darkModeSwitch():
+    if current_user.is_authenticated:
+        try:
+            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result.darkModeEnabled = not result.darkModeEnabled
+            db.session.commit()
+            return redirect(url_for('views.home'))
+        except Exception as e:
+            print("Error")
+            
