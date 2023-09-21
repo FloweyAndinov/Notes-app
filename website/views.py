@@ -53,6 +53,24 @@ def delete_note():
             db.session.commit()
     return jsonify({})
 
+
+@login_required
+@views.route('/submitNote', methods=['GET'])
+def load_submitNote():
+    dark=False
+    if current_user.is_authenticated:
+        try:
+            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            print(result.darkModeEnabled)
+        except Exception as e:
+            new_darkmode = DarkMode(user_id=current_user.id)
+            db.session.add(new_darkmode)
+            db.session.commit()
+            result = new_darkmode
+        finally:
+            dark=result.darkModeEnabled
+    return render_template("submitNote.html", user=current_user, user_name=current_user.username, dark=dark)
+
 @views.route('/darkmode', methods=['GET'])
 def darkModeSwitch():
     if current_user.is_authenticated:
