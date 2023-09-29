@@ -46,7 +46,6 @@ def load_signup():
 @login_required
 @auth.route('/signup', methods=['POST'])
 def signup():
-    print("shiet")
     email = request.form.get('email')
     password1 = request.form.get('password1')
     password2 = request.form.get('password2')

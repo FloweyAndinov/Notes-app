@@ -11,10 +11,10 @@ import json
 def home():
     dark=False
     if current_user.is_authenticated:
-        print(current_user.id)
+        
         try:
             result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
-            print(result.darkModeEnabled)
+            
         except Exception as e:
             new_darkmode = DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
@@ -61,7 +61,7 @@ def load_submitNote():
     if current_user.is_authenticated:
         try:
             result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
-            print(result.darkModeEnabled)
+            
         except Exception as e:
             new_darkmode = DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
@@ -78,7 +78,7 @@ def load_settings():
     if current_user.is_authenticated:
         try:
             result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
-            print(result.darkModeEnabled)
+            
         except Exception as e:
             new_darkmode = DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
@@ -97,7 +97,7 @@ def load_deleted():
     if current_user.is_authenticated:
         try:
             result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
-            print(result.darkModeEnabled)
+            
         except Exception as e:
             new_darkmode = DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
@@ -119,5 +119,6 @@ def darkModeSwitch():
             db.session.commit()
             return redirect(url_for('views.home'))
         except Exception as e:
-            print("Error")
+            pass
+            #print("Error")
             
