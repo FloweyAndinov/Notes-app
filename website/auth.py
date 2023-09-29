@@ -13,15 +13,16 @@ from sqlalchemy import event
 @auth.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        user_name = request.form.get('username')
-        password = request.form.get('password')
-        user = User.query.filter_by(username=user_name).first()
-        if user and check_password_hash(user.password, password):
-            flash('Logged in', category='success')
-            login_user(user, remember=True)
-            return redirect(url_for('views.home'))
-        else:
-            flash('Invalid credentials', category='error')
+        if request is not None:
+            user_name = request.form.get('username')
+            password = request.form.get('password')
+            user = User.query.filter_by(username=user_name).first()
+            if user and check_password_hash(user.password, password):
+                flash('Logged in', category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('views.home'))
+            else:
+                flash('Invalid credentials', category='error')
     return render_template("login.html", user=current_user)
 
 

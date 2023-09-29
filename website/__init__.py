@@ -35,7 +35,6 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     check_database(app)
-
     return app
 
 def check_database(app):
@@ -44,7 +43,7 @@ def check_database(app):
             db.create_all()
         print('Created database')
 
-# def create_database(app):
-#     with app.app_context():
-#         db.create_all()
-#         print('Created database')
+def create_database(app):
+    with app.app_context():
+        db.create_all()
+        print('Created database')

@@ -30,14 +30,15 @@ def home():
 @login_required
 def send_form():
     if request.method == 'POST':
-        note = request.form.get('note')
-        if len(note) < 1:
-            flash('Note is too short', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note is added', category='success')
+        if request.data:
+            note = request.form.get('note')
+            if len(note) < 1:
+                flash('Note is too short', category='error')
+            else:
+                new_note = Note(data=note, user_id=current_user.id)
+                db.session.add(new_note)
+                db.session.commit()
+                flash('Note is added', category='success')
     return redirect(url_for('views.home'))
 
 
@@ -72,7 +73,7 @@ def load_submitNote():
     return render_template("submitNote.html", user=current_user, user_name=current_user.username, dark=dark)
 
 @login_required
-@views.route('/settings', methods=['GET'])
+@views.route('/settings', methods=['GET', 'POST'])
 def load_settings():
     dark=False
     if current_user.is_authenticated:
@@ -110,15 +111,16 @@ def load_deleted():
 
 
 
-@views.route('/darkmode', methods=['GET'])
+@views.route('/darkmode', methods=['POST'])
 def darkModeSwitch():
     if current_user.is_authenticated:
         try:
             result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             result.darkModeEnabled = not result.darkModeEnabled
             db.session.commit()
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.load_settings'))
         except Exception as e:
-            pass
-            #print("Error")
+            print("Error")
+    else:
+        print("not auth")
             
