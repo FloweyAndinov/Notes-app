@@ -26,19 +26,22 @@ def home():
     return render_template("home.html", user=current_user, user_name=current_user.username, dark=dark)
 
 #add note logic
-@views.route('/', methods=['POST'])
+@views.route('/submitNote', methods=['POST'])
 @login_required
 def send_form():
-    if request.method == 'POST':
-        if request.data:
-            note = request.form.get('note')
-            if len(note) < 1:
-                flash('Note is too short', category='error')
-            else:
-                new_note = Note(data=note, user_id=current_user.id)
-                db.session.add(new_note)
-                db.session.commit()
-                flash('Note is added', category='success')
+    t = request.form.get('title')
+    note = request.form.get('note')
+    if len(note) < 1:
+        flash('Note is too short', category='error')
+        print("Note is too short")
+    else:
+        new_note = Note(title=t, data=note, user_id=current_user.id)
+        db.session.add(new_note)
+        db.session.commit()
+        print("add note")
+        flash('Note is added', category='success')
+    print(request.form.get('title'))
+    print(request.form.get('note'))
     return redirect(url_for('views.home'))
 
 
