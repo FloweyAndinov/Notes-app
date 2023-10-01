@@ -28,8 +28,10 @@
     <h1 style="text-align: center;font-size: 20px;color: var(--bs-danger);">Deleted notes will disappear completely after 7 days.</h1>
 
 <ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
+    {% for note in user.deletedNotes %}
     <li class="list-group-item">
+        {{ note.title}}
+         - 
         {{ note.data }}
         <button type="button" class="close" onClick="deleteNote({{note.id}})">
             <span aria-hidden="true">&times;</span>

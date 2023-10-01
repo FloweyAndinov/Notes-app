@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, session, url_for
 from flask_login import login_required, current_user
-from .models import Note, User, DarkMode
+from . import models as models
 views = Blueprint('views' , __name__)
 from . import db
 import json
@@ -13,10 +13,10 @@ def home():
     if current_user.is_authenticated:
         
         try:
-            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result = db.session.execute(db.select(models.DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             
         except Exception as e:
-            new_darkmode = DarkMode(user_id=current_user.id)
+            new_darkmode = models.DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
             db.session.commit()
             result = new_darkmode
@@ -35,7 +35,7 @@ def send_form():
         flash('Note is too short', category='error')
         print("Note is too short")
     else:
-        new_note = Note(title=t, data=note, user_id=current_user.id)
+        new_note = models.Note(title=t, data=note, user_id=current_user.id)
         db.session.add(new_note)
         db.session.commit()
         print("add note")
@@ -50,9 +50,11 @@ def send_form():
 def delete_note():
     note = json.loads(request.data)
     noteId = note['noteId']
-    note = Note.query.get(noteId)
+    note = models.Note.query.get(noteId)
     if note:
         if note.user_id == current_user.id:
+            deletedNote = models.DeletedNote(title=note.title, data=note.data, user_id=note.user_id)
+            db.session.add(deletedNote)
             db.session.delete(note)
             db.session.commit()
     return jsonify({})
@@ -64,10 +66,10 @@ def load_submitNote():
     dark=False
     if current_user.is_authenticated:
         try:
-            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result = db.session.execute(db.select(models.DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             
         except Exception as e:
-            new_darkmode = DarkMode(user_id=current_user.id)
+            new_darkmode = models.DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
             db.session.commit()
             result = new_darkmode
@@ -81,10 +83,10 @@ def load_settings():
     dark=False
     if current_user.is_authenticated:
         try:
-            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result = db.session.execute(db.select(models.DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             
         except Exception as e:
-            new_darkmode = DarkMode(user_id=current_user.id)
+            new_darkmode = models.DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
             db.session.commit()
             result = new_darkmode
@@ -100,10 +102,10 @@ def load_deleted():
     dark=False
     if current_user.is_authenticated:
         try:
-            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result = db.session.execute(db.select(models.DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             
         except Exception as e:
-            new_darkmode = DarkMode(user_id=current_user.id)
+            new_darkmode = models.DarkMode(user_id=current_user.id)
             db.session.add(new_darkmode)
             db.session.commit()
             result = new_darkmode
@@ -118,7 +120,7 @@ def load_deleted():
 def darkModeSwitch():
     if current_user.is_authenticated:
         try:
-            result = db.session.execute(db.select(DarkMode).filter_by(user_id=current_user.id)).scalar_one()
+            result = db.session.execute(db.select(models.DarkMode).filter_by(user_id=current_user.id)).scalar_one()
             result.darkModeEnabled = not result.darkModeEnabled
             db.session.commit()
             return redirect(url_for('views.load_settings'))
