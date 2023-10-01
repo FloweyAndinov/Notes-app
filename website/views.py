@@ -59,6 +59,18 @@ def delete_note():
             db.session.commit()
     return jsonify({})
 
+#delete note logic
+@views.route('/remove-note', methods=['POST'])
+def remove_note():
+    note = json.loads(request.data)
+    noteId = note['noteId']
+    note = models.DeletedNote.query.get(noteId)
+    if note:
+        if note.user_id == current_user.id:
+            db.session.delete(note)
+            db.session.commit()
+    return jsonify({})
+
 
 @login_required
 @views.route('/submitNote', methods=['GET'])
