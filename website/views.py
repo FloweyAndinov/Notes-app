@@ -140,4 +140,10 @@ def darkModeSwitch():
             print("Error")
     else:
         print("not auth")
+
+        
+
+@views.route('/front', methods=['GET'])
+def load_frontpage():
+    return render_template("front.html")
             
