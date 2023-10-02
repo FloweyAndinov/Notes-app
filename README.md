@@ -27,22 +27,15 @@ To use this simple notes app, follow these steps:
 Here's a brief overview of how to use the app:
 
 1. **Create a New Note**
-   - Click on the "New Note" button.
+   - Click on the "Submit Note" button.
    - Enter a title and add your note content.
    - Click "Save" to create the note.
 
 2. **View Notes**
    - On the main screen, you will see a list of all your notes.
-   - Click on a note to view its details.
-
-3. **Edit a Note**
-   - When viewing a note, click the "Edit" button.
-   - Make your changes to the title or content.
-   - Click "Save" to update the note.
 
 4. **Delete a Note**
    - When viewing a note, click the "Delete" button.
-   - Confirm the deletion if prompted.
 
 ## Technologies Used
 
