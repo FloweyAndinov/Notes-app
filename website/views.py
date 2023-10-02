@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, session, url_for
 from flask_login import login_required, current_user
+from sqlalchemy import func
 from . import models as models
 views = Blueprint('views' , __name__)
 from . import db
 import json
-
+import datetime as dt
 
 @views.route('/', methods=['GET'])
 @login_required
@@ -87,6 +88,8 @@ def load_submitNote():
             result = new_darkmode
         finally:
             dark=result.darkModeEnabled
+        
+
     return render_template("submitNote.html", user=current_user, user_name=current_user.username, dark=dark)
 
 @login_required
@@ -123,6 +126,14 @@ def load_deleted():
             result = new_darkmode
         finally:
             dark=result.darkModeEnabled
+
+        #
+        seven_days_ago = func.now() - dt.timedelta(days=7)
+        #check if deleted notes are 7 days or older
+        #remove them
+            
+
+        
     return render_template("deleted.html", user=current_user, user_name=current_user.username, dark=dark)
 
 
