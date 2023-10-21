@@ -1,3 +1,4 @@
 **/instance/
-/website/templates/*.html linguist-detectable=false
+* linguist-vendored
+*.html linguist-vendored=false
 /website/__pycache__
