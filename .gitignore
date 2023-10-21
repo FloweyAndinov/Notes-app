@@ -1,4 +1,3 @@
 **/instance/
-
+*.html linguist-detectable=false
 /website/__pycache__
-instance/database.db
